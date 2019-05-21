@@ -11,7 +11,7 @@ app.use('/dist', express.static(__dirname + '/dist'));
 app.get('/', function (request, response) {
     response.sendFile(path.join(__dirname, 'index.html'));
 });
-console.log('yoyohoneysingh');
+console.log('bohemia');
 // Starts the server.
 server.listen(5000, function () {
     console.log('Starting server on port 5000');
