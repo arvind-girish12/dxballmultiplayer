@@ -14,7 +14,6 @@ app.get('/', function (request, response) {
 // Starts the server.
 server.listen(5000, function () {
     console.log('Starting server on port 5000');
-    console.log('Server is up');
 });
 
 var players = {};
