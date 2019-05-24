@@ -1,85 +1,44 @@
 import Ball from '../models/ball';
+import Events from '../utils/events';
+import Paddle from '../models/paddle';
+
+// var body = document.querySelector('body');
+// body.style.overflow = "hidden";
 
 var socket = io();
-socket.on('message', function (data) {
-    console.log(data);
-});
-
-var movement = {
-    up: false,
-    down: false,
-    left: false,
-    right: false
-}
-
-document.addEventListener('keydown', function (event) {
-    switch (event.keyCode) {
-        case 37: // Left arrow
-            movement.left = true;
-            break;
-        case 38: // Up arrow
-            movement.up = true;
-            break;
-        case 39: // Right arrow
-            movement.right = true;
-            break;
-        case 40: // Down arrow
-            movement.down = true;
-            break;
-    }
-});
-
-document.addEventListener('keyup', function (event) {
-    switch (event.keyCode) {
-        case 37: // Left arrow
-            movement.left = false;
-            break;
-        case 38: // Up arrow
-            movement.up = false;
-            break;
-        case 39: // Right arrow
-            movement.right = false;
-            break;
-        case 40: // Down arrow
-            movement.down = false;
-            break;
-    }
-});
-
+var movement = Events();
 socket.emit('new player');
-// setInterval(function () {
-//     socket.emit('movement', movement);
-// }, 1000 / 60);
-
-var canvas = document.getElementById('canvas');
-canvas.width = 1000;
-canvas.height = 800;
-var context = canvas.getContext('2d');
-// socket.on('state', function (players) {
-//     context.clearRect(0, 0, 1000, 800);
-//     context.fillStyle = 'green';
-//     var counter = 1;
-//     for (var id in players) {
-//         var player = players[id];
-//         context.beginPath();
-//         context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
-//         counter++;
-//         context.fill();
-//     }
-// });
+setInterval(function () {
+    socket.emit('movement', movement);
+}, 1000 / 60);
 
 const ballProperties = {
     vyInitial: 200,
     vxInitial: 200,
 }
+var canvasBall = document.getElementById('canvas-ball');
+var contextBall = canvasBall.getContext('2d');
+canvasBall.width = 800;
+canvasBall.height = 800;
+
+// updateBall();
+var players = {};
+
+var canvasPaddle = document.getElementById('canvas-paddle');
+canvasPaddle.width = 800;
+canvasPaddle.height = 800;
+var contextPaddle = canvasPaddle.getContext('2d');
+socket.on('state', function (players) {
+    const paddle = new Paddle(players);
+    paddle.draw(contextPaddle)
+    console.log(this);
+});
 
 const playBall = new Ball(500, 300);
-playBall.draw(context);
+playBall.draw(contextBall);
 
 const updateBall = function () {
-    context.clearRect(0, 0, 1000, 800);
-
-    if (playBall.x > 1000 - 10 || playBall.x < 0 + 10) {
+    if (playBall.x > 800 - 10 || playBall.x < 0 + 10) {
         ballProperties.vxInitial = -ballProperties.vxInitial;
     }
 
@@ -89,7 +48,7 @@ const updateBall = function () {
 
     playBall.x += ballProperties.vxInitial / 60;
     playBall.y += ballProperties.vyInitial / 60;
-    playBall.draw(context);
+    playBall.draw(contextBall);
     window.requestAnimationFrame(updateBall);
 };
 
@@ -97,4 +56,3 @@ const updateBall = function () {
 (function () {
     window.requestAnimationFrame(updateBall);
 })();
-// updateBall();

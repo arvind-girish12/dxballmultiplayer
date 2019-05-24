@@ -19,26 +19,82 @@ server.listen(5000, function () {
 
 var players = {};
 io.on('connection', function (socket) {
+    console.log(socket.id);
     socket.on('new player', function () {
-        console.log(socket.id);
-        players[socket.id] = {
-            x: 300,
-            y: 300
-        };
+        switch (Object.keys(players)) {
+            case 0: {
+                players[socket.id] = {
+                    playerNo: 1,
+                    x: 400,
+                    y: 790
+                };
+                break;
+            };
+            case 1: {
+                players[socket.id] = {
+                    playerNo: 2,
+                    x: 790,
+                    y: 400
+                }
+                break;
+            };
+            case 2: {
+                players[socket.id] = {
+                    playerNo: 3,
+                    x: 400,
+                    y: 10
+                }
+                break;
+            };
+            case 3: {
+                players[socket.id] = {
+                    playerNo: 4,
+                    x: 10,
+                    y: 400
+                }
+                break;
+            };
+        }
     });
     socket.on('movement', function (data) {
         var player = players[socket.id] || {};
-        if (data.left) {
-            player.x -= 5;
-        }
-        if (data.up) {
-            player.y -= 5;
-        }
-        if (data.right) {
-            player.x += 5;
-        }
-        if (data.down) {
-            player.y += 5;
+        switch (player.playerNo) {
+            case 1: {
+                if (data.left) {
+                    player.x -= 5;
+                }
+                if (data.right) {
+                    player.x += 5;
+                }
+                break;
+            };
+            case 2: {
+                if (data.up) {
+                    player.y -= 5;
+                }
+                if (data.down) {
+                    player.y += 5;
+                }
+                break;
+            };
+            case 3: {
+                if (data.left) {
+                    player.x -= 5;
+                }
+                if (data.right) {
+                    player.x += 5;
+                }
+                break;
+            };
+            case 4: {
+                if (data.up) {
+                    player.y -= 5;
+                }
+                if (data.down) {
+                    player.y += 5;
+                }
+                break;
+            };
         }
     });
 });
