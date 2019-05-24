@@ -6,6 +6,7 @@ const Ball = function (x, y) {
 }
 
 Ball.prototype.draw = function (ctx) {
+    ctx.clearRect(0, 0, 800, 800);
     ctx.beginPath();
     ctx.fillStyle = 'green';
     ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);

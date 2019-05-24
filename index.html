@@ -5,7 +5,26 @@
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
-    <canvas id="canvas"></canvas>
+    <div class="wrapper">
+        <canvas id="canvas-ball"></canvas>
+        <canvas id="canvas-paddle"></canvas>
+    </div>
+    <style>
+      body{
+        overflow: hidden;
+      }
+      .wrapper {
+    position: relative;
+    width: 1000px;
+    height: 800px;
+    }
+
+      .wrapper canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    }
+    </style>
   </body>
   <script src="/dist/bundle.js"></script>
 </html>
